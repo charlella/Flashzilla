@@ -8,92 +8,83 @@
 import SwiftUI
 
 struct CardView: View {
-    @Environment(\.accessibilityDifferentiateWithoutColor) var accessibilityDifferentiateWithoutColor
-
-    @State private var isShowingAnswer = false
-    @State private var offset = CGSize.zero
-    
     let card: Card
     var removal: (() -> Void)? = nil
     
+    @State private var feedback = UINotificationFeedbackGenerator()
+    
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.accessibilityVoiceOverEnabled) var voiceOverEnabled
+    @State private var isShowingAnswer = false
+    @State private var offset = CGSize.zero
+    
     var body: some View {
-        let fillColor = accessibilityDifferentiateWithoutColor
-            ? Color.white.opacity(1 - Double(abs(offset.width / 50)))
-            : Color.white.opacity(1 - Double(abs(offset.width / 50)))
-
-        let backgroundFill = accessibilityDifferentiateWithoutColor
-            ? nil
-            : RoundedRectangle(cornerRadius: 25).fill(offset.width > 0 ? Color.green : Color.red)
-
-        let shadowedRoundedRectangle = RoundedRectangle(cornerRadius: 25)
-            .fill(fillColor)
-            .background(backgroundFill)
-            .shadow(radius: 10)
-
-        let content = VStack {
-            Text(card.prompt)
-                .font(.largeTitle)
-                .foregroundStyle(.black)
+        ZStack {
+            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                .fill(
+                    differentiateWithoutColor
+                    ? .white
+                    : .white.opacity(1 - Double(abs(offset.width / 50)))
+                )
+                .background(
+                    differentiateWithoutColor
+                    ? nil
+                    : RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .fill(offset.width > 0 ? .green : .red)
+                )
+                .shadow(radius: 10)
             
-            if isShowingAnswer {
-                Text(card.answer)
-                    .font(.title)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding(20)
-        .multilineTextAlignment(.center)
-
-        let accessibilityControls = accessibilityDifferentiateWithoutColor
-            ? VStack {
-                Spacer()
-
-                HStack {
-                    Image(systemName: "xmark.circle")
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .clipShape(Circle())
-                    Spacer()
-                    Image(systemName: "checkmark.circle")
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .clipShape(Circle())
+            VStack {
+                if voiceOverEnabled {
+                    Text(isShowingAnswer ? card.answer : card.prompt)
+                        .font(.largeTitle)
+                        .foregroundColor(.black)
+                } else {
+                    Text(card.prompt)
+                        .font(.largeTitle)
+                        .foregroundColor(.black)
+                    
+                    if isShowingAnswer {
+                        Text(card.answer)
+                            .font(.title)
+                            .foregroundColor(.gray)
+                    }
                 }
-                .foregroundStyle(.white)
-                .font(.largeTitle)
-                .padding()
             }
-            : nil
-
-        return ZStack {
-            shadowedRoundedRectangle
-            content
-        }
-        .overlay(accessibilityControls)
-        .onTapGesture {
-            isShowingAnswer.toggle()
+            .padding()
+            .multilineTextAlignment(.center)
         }
         .frame(width: 450, height: 250)
-        .rotationEffect(.degrees(offset.width / 5.0))
-        .offset(x: offset.width * 5)
-        .opacity(1 - Double(abs(offset.width / 50)))
+        .rotationEffect(.degrees(Double(offset.width / 5)))
+        .offset(x: offset.width * 5, y: 0)
+        .opacity(2 - Double(abs(offset.width / 50)))
+        .accessibilityAddTraits(.isButton)
         .gesture(
             DragGesture()
                 .onChanged { gesture in
                     offset = gesture.translation
+                    feedback.prepare()
                 }
                 .onEnded { _ in
                     if abs(offset.width) > 100 {
+                        if offset.width > 0 {
+                            feedback.notificationOccurred(.success)
+                        } else {
+                            feedback.notificationOccurred(.error)
+                        }
+                        
                         removal?()
                     } else {
                         offset = .zero
                     }
                 }
         )
+        .onTapGesture {
+            isShowingAnswer.toggle()
+        }
+        .animation(.spring(), value: offset)
     }
-
 }
-
 
 
 #Preview {
