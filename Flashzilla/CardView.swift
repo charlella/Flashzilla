@@ -21,7 +21,7 @@ extension Shape {
 
 struct CardView: View {
     let card: Card
-    var removal: (() -> Void)? = nil
+    var removal: ((Bool) -> Void)? = nil
     
     @State private var feedback = UINotificationFeedbackGenerator()
     
@@ -80,12 +80,13 @@ struct CardView: View {
                 .onEnded { _ in
                     if abs(offset.width) > 100 {
                         if offset.width > 0 {
-                            feedback.notificationOccurred(.success)
+                            removal?(false)
+//                            feedback.notificationOccurred(.success)
                         } else {
-                            feedback.notificationOccurred(.error)
+                            removal?(true)
+                            offset = .zero
+//                            feedback.notificationOccurred(.error)
                         }
-                        
-                        removal?()
                     } else {
                         offset = .zero
                     }

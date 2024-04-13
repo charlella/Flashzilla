@@ -14,6 +14,7 @@
 		BA5CE77F2BC9BA970055B294 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CE77E2BC9BA970055B294 /* Card.swift */; };
 		BA5CE7812BC9BABF0055B294 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CE7802BC9BABF0055B294 /* CardView.swift */; };
 		BA5CE7832BCB10520055B294 /* EditCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CE7822BCB10520055B294 /* EditCards.swift */; };
+		BA5CE7852BCB1B110055B294 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5CE7842BCB1B110055B294 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		BA5CE77E2BC9BA970055B294 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		BA5CE7802BC9BABF0055B294 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		BA5CE7822BCB10520055B294 /* EditCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCards.swift; sourceTree = "<group>"; };
+		BA5CE7842BCB1B110055B294 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 		BA5CE76F2BC9B99D0055B294 /* Flashzilla */ = {
 			isa = PBXGroup;
 			children = (
+				BA5CE7842BCB1B110055B294 /* DataManager.swift */,
 				BA5CE7702BC9B99D0055B294 /* FlashzillaApp.swift */,
 				BA5CE7722BC9B99D0055B294 /* ContentView.swift */,
 				BA5CE7822BCB10520055B294 /* EditCards.swift */,
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA5CE7732BC9B99D0055B294 /* ContentView.swift in Sources */,
+				BA5CE7852BCB1B110055B294 /* DataManager.swift in Sources */,
 				BA5CE77F2BC9BA970055B294 /* Card.swift in Sources */,
 				BA5CE7812BC9BABF0055B294 /* CardView.swift in Sources */,
 				BA5CE7832BCB10520055B294 /* EditCards.swift in Sources */,
